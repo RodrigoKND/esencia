@@ -61,7 +61,7 @@ export const BestSellerSection = () => {
                   <div className="text-right">
                     <span className="text-sm text-gray-500">Stock disponible:</span>
                     <div className="text-2xl font-bold text-green-600">
-                      {bestSeller?.cantidad}  {bestSeller?.cantidad <= 1 ? "unidad" : "unidades"}
+                      {bestSeller?.cantidad}  {bestSeller?.cantidad && bestSeller?.cantidad <= 1 ? "unidad" : "unidades"}
                     </div>
                   </div>
                 </div>
@@ -72,7 +72,7 @@ export const BestSellerSection = () => {
                   </Link>
 
                   <p className="text-center text-sm text-gray-500">
-                    ⚡ {bestSeller?.cantidad <= 3 ? "Últimas unidades" : "Producto más destacado"}
+                    ⚡ {bestSeller?.cantidad && bestSeller?.cantidad <= 3 ? "Últimas unidades" : "Producto más destacado"}
                   </p>
                 </div>
               </div>

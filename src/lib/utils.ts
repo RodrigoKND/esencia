@@ -1,3 +1,4 @@
+import { Product } from "@/types/database.types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -5,9 +6,8 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function handleWhatsAppClick(product, quantity = 1) {
+export function handleWhatsAppClick(product: Product, quantity = 1) {
   if (!product) {
-    console.error("No se pasó product a handleWhatsAppClick");
     return;
   }
 
