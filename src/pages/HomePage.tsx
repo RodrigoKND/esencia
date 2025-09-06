@@ -14,7 +14,7 @@ export const HomePage = () => {
       <SEO
         title="Esencia - Catálogo de confianza"
         description={`Explora nuestro catálogo de productos de todo tipo: ${allNames}. Encuentra las mejores categorías y productos en Esencia | Natura, tu tienda en línea de confianza, con artículos de alta calidad diseñados para resaltar tu belleza natural.`}
-        image_url={"https://esencia-two.vercel.app/homemart.webp"}
+        image_url={"https://esencia-natura.vercel.app/homemart.webp"}
       />
       <HeroSection />
       <BrandCarousel />
