@@ -106,7 +106,7 @@ export interface CreateOfferData {
 export interface ProductsContextType {
   // State
   products: Product[];
-  selectedProduct: ProductWithOffer | null;
+  selectedProduct: Product | null;
   productsByCategory: ProductByCategory[];
   categories: Category[];
   brands: Brand[];
