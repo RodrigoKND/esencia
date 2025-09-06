@@ -1,4 +1,3 @@
-import { Product } from "@/types/database.types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -6,11 +5,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function handleWhatsAppClick(product: Product, quantity = 1) {
-  if (!product) {
-    return;
-  }
+interface ProductWithOffer {
+  nombre: string;
+  precio_base: number;
+  marcas: {
+    nombre: string;
+  };
+}
 
+export function handleWhatsAppClick(product: ProductWithOffer, quantity: number) {
   let message = `Hola! Me interesa el producto: ${product.nombre} de ${product.marcas?.nombre ?? "Sin marca"}.`;
 
   if (quantity === 1) {
@@ -20,7 +23,7 @@ export function handleWhatsAppClick(product: Product, quantity = 1) {
     message += ` Cantidad: ${quantity} unidades. Precio unitario: $${product.precio_base}. Total: $${totalPrice}`;
   }
 
-  const phoneNumber = "79710328";
+  const phoneNumber = "+59174327882";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   window.open(whatsappUrl, "_blank");
 }

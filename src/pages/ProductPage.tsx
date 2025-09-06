@@ -148,7 +148,14 @@ export const ProductPage = () => {
               <div className="space-y-4">
                 <Button
                   onClick={() => {
-                    handleWhatsAppClick(product, quantity);
+                    if (!product) return;
+
+                    handleWhatsAppClick({
+                      nombre: product.nombre,
+                      precio_base: product.precio_base,
+                      marcas: product.marcas ? { nombre: product.marcas.nombre } : { nombre: 'Desconocido' }
+                    }, quantity);
+
                     registerWhatsAppConsultation(product?.id as string);
                   }}
                   size="lg"
