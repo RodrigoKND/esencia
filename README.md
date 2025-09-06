@@ -1,6 +1,6 @@
 # Esencia
 
-![Catálogo online Esencia](https://Esencia-two.vercel.app/Esencia.webp)
+![Catálogo online Esencia](https://Esencia-two.vercel.app/homemart.webp)
 
 ## ¿Qué es Esencia?
 
