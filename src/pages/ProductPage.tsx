@@ -19,8 +19,9 @@ export const ProductPage = () => {
   const { registerWhatsAppConsultation } = useAnalytics();
   const ofertaActiva = product?.ofertas?.[0]?.activa;
   const precioUnitario = ofertaActiva
-    ? product?.ofertas?.[0]?.precio_final
-    : product?.precio_base;
+    ? product?.ofertas?.[0]?.precio_final ?? 0
+    : product?.precio_base ?? 0;
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -30,38 +31,40 @@ export const ProductPage = () => {
     }
   }, []);
 
-
   if (loading) {
     return (
       <section className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
-        <aside className="container mx-auto px-4 py-8">
-          <div className="animate-pulse">
-            <div className="h-8 w-32 bg-gray-200 rounded mb-8"></div>
-            <div className="bg-white rounded-3xl p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <div className="h-96 bg-gray-200 rounded-3xl"></div>
-                <div className="space-y-4">
-                  <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-                  <div className="h-8 bg-gray-200 rounded w-3/4"></div>
-                  <div className="h-6 bg-gray-200 rounded w-1/2"></div>
-                  <div className="h-20 bg-gray-200 rounded"></div>
-                  <div className="h-12 bg-gray-200 rounded"></div>
-                </div>
+        <div className="container mx-auto px-4 py-8">
+          <header className="animate-pulse mb-8">
+            <div className="h-8 w-32 bg-gray-200 rounded"></div>
+          </header>
+
+          <article className="bg-white rounded-3xl p-8 animate-pulse">
+            <section className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <figure className="h-96 bg-gray-200 rounded-3xl"></figure>
+
+              <div className="space-y-4">
+                <h2 className="h-6 bg-gray-200 rounded w-1/3"></h2>
+                <p className="h-8 bg-gray-200 rounded w-3/4"></p>
+                <p className="h-6 bg-gray-200 rounded w-1/2"></p>
+                <div className="h-20 bg-gray-200 rounded"></div>
+                <div className="h-12 bg-gray-200 rounded"></div>
               </div>
-            </div>
-          </div>
-        </aside>
+            </section>
+          </article>
+        </div>
       </section>
     );
   }
+
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1))
 
   return (
     <section className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-pink-100">
-      <SEO title={`${product?.nombre || "Producto belleza"} | Esencia`} 
-      description={`✨ Descubre el producto cosmético de belleza ${product?.nombre}, creado por la marca Natura | ${product?.marcas?.nombre}, diseñado especialmente para realzar tu cuidado personal.
+      <SEO title={`${product?.nombre || "Producto belleza"} | Esencia`}
+        description={`✨ Descubre el producto cosmético de belleza ${product?.nombre}, creado por la marca Natura | ${product?.marcas?.nombre}, diseñado especialmente para realzar tu cuidado personal.
 🌸 Perteneciente a la categoría ${categories?.find(c => c.id === product?.categoria_id)?.nombre}, este producto combina calidad, innovación y resultados visibles, convirtiéndose en tu aliado ideal para resaltar tu belleza natural.`} image_url={product?.imagen_url ?? ''} />
       <div className="container mx-auto px-4 py-8">
         {/* Product Image */}

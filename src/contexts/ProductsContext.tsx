@@ -13,7 +13,7 @@ interface CacheEntry<T> {
 }
 
 interface CacheStore {
-  [key: string]: CacheEntry<any>;
+  [key: string]: CacheEntry<unknown>;
 }
 
 // Configuración del cache
@@ -31,7 +31,7 @@ const CACHE_CONFIG = {
 class SimpleCache {
   private cache: CacheStore = {};
 
-  generateKey(prefix: string, params?: any): string {
+  generateKey(prefix: string, params?: unknown): string {
     if (!params) return prefix;
     try {
       const paramsString = JSON.stringify(params);
@@ -143,14 +143,14 @@ export default function ProductsProvider({ children }: { children: ReactNode }) 
             }
 
             // Intentar obtener productos del cache
-            let productsRaw = cache.get<any[]>('products_raw');
+            let productsRaw = cache.get<Product[]>('products_raw');
             if (!productsRaw) {
                 productsRaw = await ProductService.fetchProducts();
                 cache.set('products_raw', productsRaw, CACHE_CONFIG.PRODUCTS);
             }
 
             // Procesar productos con nombres (tu lógica existente)
-            const productsWithNames = productsRaw.map((p: any) => ({
+            const productsWithNames = productsRaw.map((p) => ({
                 ...p,
                 marca_nombre: brands.find(b => b.id === p.marca_id)?.nombre || '',
                 categoria_nombre: categories.find(c => c.id === p.categoria_id)?.nombre || '',
@@ -229,7 +229,7 @@ const createProduct = async (data: CreateProductData) => {
         setError(null);
 
         // 1. Crear el producto
-        const product = await ProductService.createProduct(data);
+        await ProductService.createProduct(data);
         
         // 2. Invalidar TODO el cache relacionado
         cache.invalidate('products');

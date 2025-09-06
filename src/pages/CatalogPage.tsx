@@ -11,8 +11,8 @@ import { useMobile } from '@/hooks/useMobile';
 import { useProducts } from '@/hooks/useProducts';
 import { useBrand } from '@/hooks/useBrand';
 import { useCategory } from '@/hooks/useCategory';
-import { Product } from '@/types/database.types';
 import { SEO } from '@/components/SEO';
+import { Product } from '@/types/database.types';
 
 export const CatalogPage = () => {
   const { category } = useParams();
@@ -27,28 +27,34 @@ export const CatalogPage = () => {
   // Apply URL params to filters
   useEffect(() => {
     window.scrollTo(0, 0);
-    const newFilters: any = {};
+    const newFilters: Partial<{
+      marca?: string[];
+      categoria: string[];
+      precio?: { min: number; max: number };
+      busqueda?: string;
+    }> = {};
 
-    if (category) newFilters.categoria = category.split('-').join(' '); // sin array
+    if (category) {      
+      newFilters.categoria = category.split('-'); // sin array
+    }
     updateFilters(newFilters);
   }, [category]);
-
 
   const sortedProducts = filteredProducts.sort((a: Product, b: Product) => {
     let aValue: string | number;
     let bValue: string | number;
     switch (sortBy) {
       case 'precio':
-        aValue = a.precio_base;
-        bValue = b.precio_base;
+        aValue = a.precio_base || 0;
+        bValue = b.precio_base || 0;
         break;
       case 'nombre':
         aValue = a.nombre.toLowerCase();
         bValue = b.nombre.toLowerCase();
         break;
       case 'marca':
-        aValue = a.marcas.nombre.toLowerCase() || "";
-        bValue = b.marcas.nombre.toLowerCase() || "";
+        aValue = a.marcas ?  a.marcas.nombre.toLowerCase(): 0;
+        bValue = b.marcas ?  b.marcas.nombre.toLowerCase(): 0;
         break;
       default:
         aValue = a.nombre.toLowerCase();

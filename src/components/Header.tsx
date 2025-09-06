@@ -33,8 +33,7 @@ export const Header = () => {
   const searchSuggestions = products
     ?.filter(product =>
       product.nombre.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.marcas?.nombre?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      product.categoria_nombre?.toLowerCase().includes(searchQuery.toLowerCase())
+      product.marcas?.nombre?.toLowerCase().includes(searchQuery.toLowerCase())
     )
     .slice(0, 5);
 

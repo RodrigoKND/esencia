@@ -1,35 +1,43 @@
+import { Product } from "@/types/database.types";
 import { useState, useMemo } from "react";
 
-export const useFilters = (products) => {
-  const [filters, setFilters] = useState({
+// --- Tipos ---
+interface FiltersState {
+  marca: string[];
+  categoria: string[];
+  precio: { min: number; max: number };
+  busqueda: string;
+}
+
+// --- Hook ---
+export const useFilters = (products: Product[]) => {
+  const [filters, setFilters] = useState<FiltersState>({
     marca: [],
     categoria: [],
     precio: { min: 0, max: 0 },
     busqueda: "",
   });
 
+  // --- Productos filtrados ---
   const filteredProducts = useMemo(() => {
-    return products?.filter((product) => {
+    return products.filter((product) => {
       // --- Filtro por marca ---
       if (
         filters.marca.length > 0 &&
-        !filters.marca.includes(product?.marcas?.nombre)
+        (!product.marcas?.nombre || !filters.marca.includes(product.marcas.nombre))
       ) {
         return false;
       }
 
       // --- Filtro por categoría ---
-      if (
-        filters.categoria.length > 0 &&
-        !filters.categoria.includes(product?.categoria_nombre)
-      ) {
+      if (filters.categoria.length > 0 && !filters.categoria.includes(product.categoria_nombre || "")) {
         return false;
       }
 
       // --- Filtro por precio ---
       if (
-        (filters.precio.min > 0 && product?.precio < filters.precio.min) ||
-        (filters.precio.max > 0 && product?.precio > filters.precio.max)
+        (filters.precio.min > 0 && product.precio && product.precio < filters.precio.min) ||
+        (filters.precio.max > 0 && product.precio && product.precio > filters.precio.max)
       ) {
         return false;
       }
@@ -37,13 +45,9 @@ export const useFilters = (products) => {
       // --- Filtro por búsqueda ---
       if (filters.busqueda) {
         const searchLower = filters.busqueda.toLowerCase();
-        const matchesName = product?.nombre?.toLowerCase().includes(searchLower);
-        const matchesBrand = product?.marcas?.nombre
-          ?.toLowerCase()
-          .includes(searchLower);
-        const matchesCategory = product?.categoria_nombre
-          ?.toLowerCase()
-          .includes(searchLower);
+        const matchesName = product.nombre.toLowerCase().includes(searchLower);
+        const matchesBrand = product.marcas?.nombre.toLowerCase().includes(searchLower);
+        const matchesCategory = product?.categoria_nombre?.toLowerCase().includes(searchLower);
 
         if (!matchesName && !matchesBrand && !matchesCategory) {
           return false;
@@ -54,30 +58,25 @@ export const useFilters = (products) => {
     });
   }, [products, filters]);
 
-  // --- Nuevo updateFilters con toggle automático ---
-const updateFilters = (newFilters) => {
-  setFilters((prev) => ({
-    marca: newFilters.marca
-      ? Array.isArray(newFilters.marca)
-        ? newFilters.marca
-        : [...prev.marca, newFilters.marca]
-      : prev.marca,
+  // --- Actualizar filtros (toggle automático) ---
+  const updateFilters = (newFilters: Partial<FiltersState>) => {
+    setFilters((prev) => ({
+      marca: newFilters.marca
+        ? Array.isArray(newFilters.marca)
+          ? newFilters.marca
+          : [...prev.marca, newFilters.marca]
+        : prev.marca,
 
-    categoria: newFilters.categoria
-      ? Array.isArray(newFilters.categoria)
-        ? newFilters.categoria
-        : [...prev.categoria, newFilters.categoria]
-      : prev.categoria,
+      categoria: newFilters.categoria
+        ? Array.isArray(newFilters.categoria)
+          ? newFilters.categoria
+          : [...prev.categoria, newFilters.categoria]
+        : prev.categoria,
 
-    precio: newFilters.precio ?? prev.precio,
-
-    busqueda:
-      typeof newFilters.busqueda === "string"
-        ? newFilters.busqueda
-        : prev.busqueda,
-  }));
-};
-
+      precio: newFilters.precio ?? prev.precio,
+      busqueda: newFilters.busqueda ?? prev.busqueda,
+    }));
+  };
 
   const clearFilters = () => {
     setFilters({
@@ -88,10 +87,5 @@ const updateFilters = (newFilters) => {
     });
   };
 
-  return {
-    filters,
-    filteredProducts,
-    updateFilters,
-    clearFilters,
-  };
+  return { filters, filteredProducts, updateFilters, clearFilters };
 };

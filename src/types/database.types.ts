@@ -17,22 +17,24 @@ export interface Brand {
 }
 
 export interface Product {
-  id: string;
+  id?: string;
   nombre: string;
   descripcion?: string;
   marca_id?: string;
   categoria_id?: string;
-  cantidad: number;
+  cantidad?: number;
   precio_base: number;
   moneda?: string;
   imagen_url?: string;
-  esta_en_oferta: boolean;
-  es_destacado: boolean;
+  esta_en_oferta?: boolean;
+  es_destacado?: boolean;
   activo?: boolean;
-  created_at: string;
-  updated_at: string;
+  created_at?: string;
+  updated_at?: string;
   marcas?: {nombre: string};
-    ofertas?: Offer[];
+  ofertas?: Offer[];
+  precio?: number;
+  categoria_nombre?: string;
 }
 
 export interface Offer {

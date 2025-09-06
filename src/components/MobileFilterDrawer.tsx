@@ -2,8 +2,15 @@ import { Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { FilterSidebar } from './FilterSidebar';
-import { Filters } from '@/hooks/useFilters';
-
+interface Filters {
+  marca?: string[];
+  categoria?: string[];
+  precio?: {
+    min: number;
+    max: number;
+  };
+  busqueda?: string;
+}
 interface MobileFilterDrawerProps {
   filters: Filters;
   onFiltersChange: (filters: Partial<Filters>) => void;
@@ -15,11 +22,11 @@ export const MobileFilterDrawer = ({
   onFiltersChange, 
   onClearFilters, 
 }: MobileFilterDrawerProps) => {
-  const activeFiltersCount = 
-    filters.marca.length + 
-    filters.categoria.length + 
-    (filters.precio ? 1 : 0) + 
-    (filters.busqueda ? 1 : 0);
+  const activeFiltersCount =
+    (filters?.marca ? filters.marca.length : 0) +
+    (filters?.categoria ? filters.categoria.length : 0) +
+    (((filters?.precio?.max ?? 0) > 0 || (filters?.precio?.min ?? 0) > 0) ? 1 : 0) +
+    (filters?.busqueda ? 1 : 0);
 
   return (
     <Sheet>
