@@ -1,5 +1,4 @@
 import { Card, CardContent } from '@/components/ui/card';
-
 export const BrandCarousel = () => {
   return (
     <section className="py-16 bg-white">
@@ -16,7 +15,7 @@ export const BrandCarousel = () => {
             excepcionales que transformarán tu cuidado personal
           </p>
         </div>
-        
+
         <Card className="overflow-hidden">
           <CardContent className="lg:p-6 p-2 grid grid-cols-1 md:grid-cols-2 items-center gap-4 md:gap-6">
 
