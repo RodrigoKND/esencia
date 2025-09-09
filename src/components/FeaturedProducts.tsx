@@ -1,9 +1,10 @@
+import { useNearScreen } from '@/hooks/useNearScreen';
 import { ProductGrid } from './ProductGrid';
 import { useProducts } from '@/hooks/useProducts';
 
 export const FeaturedProducts = () => {
   const { products, loading, error } = useProducts();
-
+  const {isNearScreen, elementRef} = useNearScreen();
   if (loading) {
     return <p className="text-center py-10">Cargando productos...</p>;
   }
@@ -13,7 +14,7 @@ export const FeaturedProducts = () => {
   }
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-16 bg-white" ref={elementRef}>
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-black mb-4">Nuestros Productos</h2>
@@ -21,8 +22,11 @@ export const FeaturedProducts = () => {
             Descubre nuestros productos más populares y recomendados por nuestros clientes.
           </p>
         </div>
-
-        <ProductGrid products={products} />
+        {
+          isNearScreen && (
+            <ProductGrid products={products} />
+          )
+        }
       </div>
     </section>
   );
